@@ -10,6 +10,42 @@
       </p>
     </div>
 
+    <!-- About Section -->
+    <div id="about" class="card bg-dark border-info mb-4">
+      <div class="card-header bg-info text-white">
+        <h5 class="mb-0">
+          <i class="bi bi-info-circle-fill me-2"></i>
+          About Planetary Hours
+        </h5>
+      </div>
+      <div class="card-body text-white">
+        <p class="mb-3">
+          Planetary hours are an ancient astrological system that divides each day and night into 12 unequal hours, 
+          each ruled by one of the seven classical planets: Saturn, Jupiter, Mars, Sun, Venus, Mercury, and Moon.
+        </p>
+        <p class="mb-3">
+          The day hours begin at sunrise and the night hours begin at sunset. Each hour is associated with specific 
+          planetary energies that can influence the success of different activities.
+        </p>
+        <div class="col-md-6 col-lg-4 mb-3">
+          <div class="card bg-light border-0">
+            <div class="card-body p-3 text-dark">
+              <h6>Best Times for:</h6>
+              <ul class="list-unstyled">
+                <li><span class="text-warning fw-bold">☉ Sun:</span> Leadership, creativity, health</li>
+                <li><span class="text-info fw-bold">☽ Moon:</span> Intuition, emotions, family</li>
+                <li><span class="text-secondary fw-bold">☿ Mercury:</span> Communication, learning, travel</li>
+                <li><span class="text-success fw-bold">♀ Venus:</span> Love, beauty, relationships</li>
+                <li><span class="text-danger fw-bold">♂ Mars:</span> Action, courage, competition</li>
+                <li><span class="text-primary fw-bold">♃ Jupiter:</span> Growth, wisdom, expansion</li>
+                <li><span class="text-dark fw-bold">♄ Saturn:</span> Discipline, structure, long-term goals</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
     <!-- Location Input Form -->
     <div class="card bg-dark border-primary mb-4">
       <div class="card-header bg-primary text-white">
@@ -102,13 +138,17 @@
           <div class="row mb-4">
             <div class="col-md-6">
               <div class="text-center">
-                <h6 class="text-warning">Sunrise</h6>
+                <h6 class="text-success">
+                  <i class="bi bi-sunrise me-2"></i>Sunrise
+                </h6>
                 <p class="h4 text-white"><%= @planetary_hours[:sunrise].strftime("%I:%M %p") %></p>
               </div>
             </div>
             <div class="col-md-6">
               <div class="text-center">
-                <h6 class="text-warning">Sunset</h6>
+                <h6 class="text-info">
+                  <i class="bi bi-sunset me-2"></i>Sunset
+                </h6>
                 <p class="h4 text-white"><%= @planetary_hours[:sunset].strftime("%I:%M %p") %></p>
               </div>
             </div>
@@ -177,185 +217,6 @@
       </div>
     <% end %>
 
-    <!-- About Section -->
-    <div id="about" class="card bg-dark border-info mt-5">
-      <div class="card-header bg-info text-white">
-        <h5 class="mb-0">
-          <i class="bi bi-info-circle-fill me-2"></i>
-          About Planetary Hours
-        </h5>
-      </div>
-      <div class="card-body text-white">
-        <p class="mb-3">
-          Planetary hours are an ancient astrological system that divides each day and night into 12 unequal hours, 
-          each ruled by one of the seven classical planets: Saturn, Jupiter, Mars, Sun, Venus, Mercury, and Moon.
-        </p>
-        <p class="mb-3">
-          The day hours begin at sunrise and the night hours begin at sunset. Each hour is associated with specific 
-          planetary energies that can influence the success of different activities.
-        </p>
-        <div class="row">
-          <div class="col-md-6">
-            <h6 class="text-warning">Best Times for:</h6>
-            <ul class="list-unstyled">
-              <li class="text-white"><span class="text-success fw-bold">Sun:</span> Leadership, creativity, health</li>
-              <li class="text-white"><span class="text-info fw-bold">Moon:</span> Intuition, emotions, family</li>
-              <li class="text-white"><span class="text-warning fw-bold">Mercury:</span> Communication, learning, travel</li>
-              <li class="text-white"><span class="text-danger fw-bold">Venus:</span> Love, beauty, relationships</li>
-            </ul>
-          </div>
-          <div class="col-md-6">
-            <ul class="list-unstyled">
-              <li class="text-white"><span class="text-primary fw-bold">Mars:</span> Action, courage, competition</li>
-              <li class="text-white"><span class="text-success fw-bold">Jupiter:</span> Growth, wisdom, expansion</li>
-              <li class="text-white"><span class="text-secondary fw-bold">Saturn:</span> Discipline, structure, long-term goals</li>
-            </ul>
-          </div>
-        </div>
-      </div>
-    </div>
   </div>
 </div>
 
-<script>
-let searchTimeout;
-
-function getCurrentLocation() {
-  if (navigator.geolocation) {
-    navigator.geolocation.getCurrentPosition(function(position) {
-      document.getElementById('latitude-field').value = position.coords.latitude.toFixed(6);
-      document.getElementById('longitude-field').value = position.coords.longitude.toFixed(6);
-      document.getElementById('location-search').value = '';
-      hideSuggestions();
-    });
-  } else {
-    alert("Geolocation is not supported by this browser.");
-  }
-}
-
-function geocodeLocation() {
-  const locationInput = document.getElementById('location-search');
-  const query = locationInput.value.trim();
-  
-  if (query.length < 3) {
-    alert("Please enter a city name or ZIP code (at least 3 characters).");
-    return;
-  }
-
-  // Show loading state
-  const button = event.target;
-  const originalText = button.innerHTML;
-  button.innerHTML = '<i class="bi bi-hourglass-split me-2"></i>Searching...';
-  button.disabled = true;
-
-  fetch(`/planetary_hours/search_locations?q=${encodeURIComponent(query)}`)
-    .then(response => response.json())
-    .then(locations => {
-      if (locations.length > 0) {
-        // Use the first result
-        const location = locations[0];
-        document.getElementById('latitude-field').value = location.latitude.toFixed(6);
-        document.getElementById('longitude-field').value = location.longitude.toFixed(6);
-        locationInput.value = location.name;
-        hideSuggestions();
-      } else {
-        alert("No location found. Please try a different city or ZIP code.");
-      }
-    })
-    .catch(error => {
-      console.error('Error geocoding location:', error);
-      alert("Error finding location. Please try again.");
-    })
-    .finally(() => {
-      // Reset button state
-      button.innerHTML = originalText;
-      button.disabled = false;
-    });
-}
-
-function searchLocations(query) {
-  if (query.length < 3) {
-    hideSuggestions();
-    return;
-  }
-
-  clearTimeout(searchTimeout);
-  searchTimeout = setTimeout(() => {
-    fetch(`/planetary_hours/search_locations?q=${encodeURIComponent(query)}`)
-      .then(response => response.json())
-      .then(locations => {
-        showSuggestions(locations);
-      })
-      .catch(error => {
-        console.error('Error searching locations:', error);
-        hideSuggestions();
-      });
-  }, 300);
-}
-
-function showSuggestions(locations) {
-  const suggestionsDiv = document.getElementById('location-suggestions');
-  suggestionsDiv.innerHTML = '';
-
-  if (locations.length === 0) {
-    hideSuggestions();
-    return;
-  }
-
-  locations.forEach(location => {
-    const item = document.createElement('div');
-    item.className = 'list-group-item list-group-item-action bg-dark text-light border-secondary';
-    item.style.cursor = 'pointer';
-    item.innerHTML = `
-      <div class="fw-bold">${location.name}</div>
-      <small class="text-muted">${location.latitude.toFixed(6)}, ${location.longitude.toFixed(6)}</small>
-    `;
-    
-    item.addEventListener('click', () => {
-      selectLocation(location);
-    });
-    
-    suggestionsDiv.appendChild(item);
-  });
-
-  suggestionsDiv.style.display = 'block';
-}
-
-function hideSuggestions() {
-  document.getElementById('location-suggestions').style.display = 'none';
-}
-
-function selectLocation(location) {
-  document.getElementById('latitude-field').value = location.latitude.toFixed(6);
-  document.getElementById('longitude-field').value = location.longitude.toFixed(6);
-  document.getElementById('location-search').value = location.name;
-  hideSuggestions();
-}
-
-// Event listeners
-document.addEventListener('DOMContentLoaded', function() {
-  const locationSearch = document.getElementById('location-search');
-  
-  locationSearch.addEventListener('input', function() {
-    searchLocations(this.value);
-  });
-  
-  locationSearch.addEventListener('blur', function() {
-    // Delay hiding suggestions to allow clicking on them
-    setTimeout(hideSuggestions, 200);
-  });
-  
-  locationSearch.addEventListener('focus', function() {
-    if (this.value.length >= 3) {
-      searchLocations(this.value);
-    }
-  });
-  
-  // Hide suggestions when clicking outside
-  document.addEventListener('click', function(event) {
-    if (!event.target.closest('#location-search') && !event.target.closest('#location-suggestions')) {
-      hideSuggestions();
-    }
-  });
-});
-</script>
