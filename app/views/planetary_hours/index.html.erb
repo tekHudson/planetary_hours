@@ -10,42 +10,6 @@
       </p>
     </div>
 
-    <!-- About Section -->
-    <div id="about" class="card bg-dark border-info mb-4">
-      <div class="card-header bg-info text-white">
-        <h5 class="mb-0">
-          <i class="bi bi-info-circle-fill me-2"></i>
-          About Planetary Hours
-        </h5>
-      </div>
-      <div class="card-body text-white">
-        <p class="mb-3">
-          Planetary hours are an ancient astrological system that divides each day and night into 12 unequal hours, 
-          each ruled by one of the seven classical planets: Saturn, Jupiter, Mars, Sun, Venus, Mercury, and Moon.
-        </p>
-        <p class="mb-3">
-          The day hours begin at sunrise and the night hours begin at sunset. Each hour is associated with specific 
-          planetary energies that can influence the success of different activities.
-        </p>
-        <div class="col-md-6 col-lg-4 mb-3">
-          <div class="card bg-light border-0">
-            <div class="card-body p-3 text-dark">
-              <h6>Best Times for:</h6>
-              <ul class="list-unstyled">
-                <li><span class="text-warning fw-bold">☉ Sun:</span> Leadership, creativity, health</li>
-                <li><span class="text-info fw-bold">☽ Moon:</span> Intuition, emotions, family</li>
-                <li><span class="text-secondary fw-bold">☿ Mercury:</span> Communication, learning, travel</li>
-                <li><span class="text-success fw-bold">♀ Venus:</span> Love, beauty, relationships</li>
-                <li><span class="text-danger fw-bold">♂ Mars:</span> Action, courage, competition</li>
-                <li><span class="text-primary fw-bold">♃ Jupiter:</span> Growth, wisdom, expansion</li>
-                <li><span class="text-dark fw-bold">♄ Saturn:</span> Discipline, structure, long-term goals</li>
-              </ul>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-
     <!-- Location Input Form -->
     <div class="card bg-dark border-primary mb-4">
       <div class="card-header bg-primary text-white">
@@ -166,7 +130,7 @@
                   <div class="card-body p-3 text-dark">
                     <div class="d-flex justify-content-between align-items-center">
                       <div>
-                        <h6 class="mb-1 text-<%= planet_color(hour[:planet]) %>">
+                        <h6 class="mb-1">
                           <%= planet_symbol(hour[:planet]) %> <%= hour[:planet] %>
                         </h6>
                         <small class="text-muted">Hour <%= hour[:hour] %></small>
@@ -196,7 +160,7 @@
                   <div class="card-body p-3 text-dark">
                     <div class="d-flex justify-content-between align-items-center">
                       <div>
-                        <h6 class="mb-1 text-<%= planet_color(hour[:planet]) %>">
+                        <h6 class="mb-1">
                           <%= planet_symbol(hour[:planet]) %> <%= hour[:planet] %>
                         </h6>
                         <small class="text-muted">Hour <%= hour[:hour] %></small>
@@ -217,6 +181,41 @@
       </div>
     <% end %>
 
+    <!-- About Section -->
+    <div id="about" class="card bg-dark border-info mb-4">
+      <div class="card-header bg-info text-white">
+        <h5 class="mb-0">
+          <i class="bi bi-info-circle-fill me-2"></i>
+          About Planetary Hours
+        </h5>
+      </div>
+      <div class="card-body text-white">
+        <p class="mb-3">
+          Planetary hours are an ancient astrological system that divides each day and night into 12 unequal hours, 
+          each ruled by one of the seven classical planets: Saturn, Jupiter, Mars, Sun, Venus, Mercury, and Moon.
+        </p>
+        <p class="mb-3">
+          The day hours begin at sunrise and the night hours begin at sunset. Each hour is associated with specific 
+          planetary energies that can influence the success of different activities.
+        </p>
+        <div class="col-md-6 col-lg-4 mb-3">
+          <div class="card bg-secondary border-0">
+            <div class="card-body p-3 text-white">
+              <h6>Best Times for:</h6>
+              <ul class="list-unstyled">
+                <li><span class="fw-bold">☉ Sun:</span> Leadership, creativity, health</li>
+                <li><span class="fw-bold">☽ Moon:</span> Intuition, emotions, family</li>
+                <li><span class="fw-bold">☿ Mercury:</span> Communication, learning, travel</li>
+                <li><span class="fw-bold">♀ Venus:</span> Love, beauty, relationships</li>
+                <li><span class="fw-bold">♂ Mars:</span> Action, courage, competition</li>
+                <li><span class="fw-bold">♃ Jupiter:</span> Growth, wisdom, expansion</li>
+                <li><span class="fw-bold">♄ Saturn:</span> Discipline, structure, long-term goals</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
   </div>
 </div>
 
