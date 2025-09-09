@@ -15,8 +15,7 @@ gem "importmap-rails"
 gem "turbo-rails"
 # Hotwire's modest JavaScript framework [https://stimulus.hotwired.dev]
 gem "stimulus-rails"
-# Bundle and process CSS [https://github.com/rails/cssbundling-rails]
-gem "cssbundling-rails"
+# CSS is handled by Rails asset pipeline with regular CSS files
 # Build JSON APIs with ease [https://github.com/rails/jbuilder]
 gem "jbuilder"
 
