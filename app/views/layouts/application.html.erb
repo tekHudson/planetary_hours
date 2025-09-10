@@ -7,6 +7,7 @@
     <meta name="mobile-web-app-capable" content="yes">
     <%= csrf_meta_tags %>
     <%= csp_meta_tag %>
+    <meta name="csrf-token" content="<%= form_authenticity_token %>">
 
     <%= yield :head %>
 
@@ -24,11 +25,11 @@
     <%# Includes all stylesheet files in app/assets/stylesheets %>
     <%= stylesheet_link_tag "application", "data-turbo-track": "reload" %>
     
-    <%# Simple JavaScript setup - no importmap issues %>
+    <%# Bootstrap CDN %>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
     
-    <%# Standard Rails asset pipeline for JavaScript %>
-    <%= javascript_include_tag "application", "data-turbo-track": "reload" %>
+    <%# Importmap for ES6 modules %>
+    <%= javascript_importmap_tags %>
   </head>
 
   <body class="bg-dark text-light">

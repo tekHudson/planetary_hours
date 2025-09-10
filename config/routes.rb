@@ -1,7 +1,10 @@
 Rails.application.routes.draw do
   root "planetary_hours#index"
   get "planetary_hours/calculate"
-  get "planetary_hours/search_locations", to: "planetary_hours#search_locations"
+
+  # Geolocation routes
+  get "geolocation/search_locations", to: "geolocation#search_locations"
+  post "geolocation/set_timezone", to: "geolocation#set_timezone"
 
   # Define your application routes per the DSL in https://guides.rubyonrails.org/routing.html
 

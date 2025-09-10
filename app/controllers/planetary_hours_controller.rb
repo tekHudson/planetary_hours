@@ -1,19 +1,15 @@
-class PlanetaryHoursController < ApplicationController
+ class PlanetaryHoursController < ApplicationController
   def index
-    # Default to current location or a default location
-    @latitude = params[:latitude]&.to_f || 40.7128  # New York default
-    @longitude = params[:longitude]&.to_f || -74.0060
-    @date = params[:date]&.to_date || Date.current
-
-    if @latitude && @longitude
-      @planetary_hours = calculate_planetary_hours
-    end
+    @latitude = params[:latitude]&.to_f
+    @longitude = params[:longitude]&.to_f
+    @date = params[:date]&.to_date || current_date_in_user_timezone
+    @planetary_hours = calculate_planetary_hours
   end
 
   def calculate
     @latitude = params[:latitude]&.to_f
     @longitude = params[:longitude]&.to_f
-    @date = params[:date]&.to_date || Date.current
+    @date = params[:date]&.to_date || current_date_in_user_timezone
 
     if @latitude && @longitude
       @planetary_hours = calculate_planetary_hours
@@ -27,34 +23,24 @@ class PlanetaryHoursController < ApplicationController
     end
   end
 
-  def search_locations
-    query = params[:q]
-    if query.present?
-      begin
-        results = Geocoder.search(query, limit: 10)
-        locations = results.map do |result|
-          {
-            name: result.display_name,
-            latitude: result.latitude,
-            longitude: result.longitude,
-            country: result.country,
-            state: result.state,
-            city: result.city
-          }
-        end
-        render json: locations
-      rescue => e
-        Rails.logger.error "Geocoding error: #{e.message}"
-        render json: []
-      end
-    else
-      render json: []
-    end
-  end
 
   private
 
+  def current_date_in_user_timezone
+    if user_timezone.present?
+      Time.current.in_time_zone(user_timezone).to_date
+    else
+      Date.current
+    end
+  end
+
+  def user_timezone
+    session[:user_timezone] || params[:timezone]
+  end
+
   def calculate_planetary_hours
+    return nil if @latitude.blank? || @longitude.blank? || @date.blank?
+
     calculator = PlanetaryHoursCalculator.new(
       latitude: @latitude,
       longitude: @longitude,
@@ -62,4 +48,4 @@ class PlanetaryHoursController < ApplicationController
     )
     calculator.calculate
   end
-end
+ end
