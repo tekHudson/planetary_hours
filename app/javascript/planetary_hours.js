@@ -1,6 +1,19 @@
 // Planetary Hours Calculator JavaScript
 let searchTimeout;
 
+// Check if coordinates are set and enable/disable calculate button
+function updateCalculateButtonState() {
+  const latitude = document.getElementById('latitude-field').value;
+  const longitude = document.getElementById('longitude-field').value;
+  const calculateBtn = document.getElementById('calculate-btn');
+  
+  if (latitude && longitude && latitude !== '' && longitude !== '') {
+    calculateBtn.disabled = false;
+  } else {
+    calculateBtn.disabled = true;
+  }
+}
+
 function getCurrentLocation() {
   if (navigator.geolocation) {
     navigator.geolocation.getCurrentPosition(function(position) {
@@ -8,6 +21,9 @@ function getCurrentLocation() {
       document.getElementById('longitude-field').value = position.coords.longitude.toFixed(6);
       document.getElementById('location-search').value = '';
       hideSuggestions();
+      
+      // Enable the calculate button
+      updateCalculateButtonState();
       
       // Submit the form to calculate planetary hours
       document.querySelector('form').submit();
@@ -156,6 +172,9 @@ function selectLocation(location) {
   document.getElementById('longitude-field').value = location.longitude.toFixed(6);
   document.getElementById('location-search').value = location.name;
   hideSuggestions();
+  
+  // Enable the calculate button
+  updateCalculateButtonState();
 }
 
 // Timezone detection
@@ -260,6 +279,9 @@ function calculatePlanetaryHours() {
         locationInput.value = location.name;
         hideSuggestions();
         
+        // Enable the calculate button
+        updateCalculateButtonState();
+        
         // Now submit the form
         document.querySelector('form').submit();
       } else {
@@ -276,6 +298,11 @@ function calculatePlanetaryHours() {
       button.disabled = false;
     });
 }
+
+// Initialize button state when page loads
+document.addEventListener('DOMContentLoaded', function() {
+  updateCalculateButtonState();
+});
 
 // Make functions globally available for onclick handlers
 window.getCurrentLocation = getCurrentLocation;
